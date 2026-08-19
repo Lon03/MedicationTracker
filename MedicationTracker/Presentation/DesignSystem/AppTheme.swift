@@ -81,6 +81,7 @@ enum AppTheme {
         static let emptyStateSymbol: CGFloat = 112
         static let onboardingArtwork: CGFloat = 210
         static let onboardingArtworkInner: CGFloat = 142
+        static let dayPickerSheetHeight: CGFloat = 480
     }
 
     enum TextLayout {

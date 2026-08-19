@@ -194,11 +194,16 @@ struct ScheduleView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button { isChoosingDay = false } label: { Text(.commonDone) }
+                    Button {
+                        isChoosingDay = false
+                    } label: {
+                        Image(systemName: AppTheme.Images.close)
+                    }
+                    .accessibilityLabel(Text(.commonCancel))
                 }
             }
         }
-        .presentationDetents([.medium, .large])
+        .presentationDetents([.height(AppTheme.Sizes.dayPickerSheetHeight)])
     }
 
     private func progress(for occurrences: [DoseOccurrence]) -> some View {

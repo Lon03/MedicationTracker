@@ -76,18 +76,8 @@ struct MedicationFormView: View {
                     }
                 }
             }
-            .safeAreaInset(edge: .bottom) {
-                Button {
-                    focusedField = nil
-                    viewModel.handle(.save)
-                } label: {
-                    Text(.commonSave)
-                }
-                .buttonStyle(.primary)
-                .disabled(!viewModel.state.canSave)
-                .screenPadding()
-                .padding(.vertical, AppTheme.Spacing.medium)
-                .background(AppTheme.Colors.formBottomBar)
+            .safeAreaInset(edge: .bottom, spacing: 0) {
+                saveBar
             }
         }
         .task { await viewModel.load() }
@@ -126,6 +116,28 @@ struct MedicationFormView: View {
             Button(.commonCancel, role: .cancel) {}
         } message: {
             Text(.deleteConfirmationMessage)
+        }
+    }
+
+    private var saveBar: some View {
+        Button {
+            focusedField = nil
+            viewModel.handle(.save)
+        } label: {
+            Text(.commonSave)
+        }
+        .buttonStyle(.primary)
+        .disabled(!viewModel.state.canSave)
+        .screenPadding()
+        .padding(.vertical, AppTheme.Spacing.medium)
+        .frame(maxWidth: .infinity)
+        .background(alignment: .top) {
+            AppTheme.Colors.formBottomBar
+                .overlay(alignment: .top) {
+                    AppTheme.Colors.line
+                        .frame(height: AppTheme.Stroke.standard)
+                }
+                .ignoresSafeArea(edges: .bottom)
         }
     }
 
