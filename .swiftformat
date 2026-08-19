@@ -1,0 +1,20 @@
+--exclude .build,DerivedData,build
+
+# format options
+--swiftversion 6.0
+
+--indent 4
+--ifdef no-indent
+--maxwidth 120
+--operatorfunc spaced
+--self remove
+--trimwhitespace always
+--wraparguments preserve
+--wrapcollections preserve
+
+# rules
+
+--enable isEmpty
+--allman false
+--elseposition same-line
+--disable elseOnSameLine, redundantSelf, redundantSendable, wrapFunctionBodies, wrapMultilineStatementBraces, wrapPropertyBodies

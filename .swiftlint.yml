@@ -1,0 +1,93 @@
+disabled_rules:
+  - trailing_whitespace
+  - unused_setter_value
+  - redundant_discardable_let
+  - identifier_name
+  - trailing_closure
+  - trailing_comma
+
+opt_in_rules:
+  - empty_count
+  - force_unwrapping
+  - unneeded_parentheses_in_closure_argument
+  - unavailable_function
+  - strict_fileprivate
+  - sorted_imports
+  - sorted_first_last
+  - required_enum_case
+  - redundant_type_annotation
+  - redundant_nil_coalescing
+  - prohibited_super_call
+  - override_in_extension
+  - overridden_super_call
+  - operator_usage_whitespace
+  - no_extension_access_modifier
+  - multiline_function_chains
+  - multiline_arguments
+  - modifier_order
+  - lower_acl_than_parent
+  - literal_expression_end_indentation
+  - first_where
+  - fatal_error_message
+  - explicit_init
+  - empty_string
+  - closure_end_indentation
+
+# `included` keeps the strict ruleset on production code only — test fixtures
+# lean on constructs (force-unwrapped fixtures, long literal blocks) that are
+# noisy under `force_unwrapping`. Add `MedicationTrackerTests` here if
+# test-level lint ever becomes a real need.
+included:
+  - MedicationTracker
+
+excluded:
+  - .build/
+  - DerivedData/
+
+# Localization is enforced, not merely documented: every user-facing string must come from a
+# `Localizable.xcstrings` symbol (`Text(.someKey)` / `L(.someKey)`), never from a literal.
+# A literal passed to these initialisers either skips localization entirely or silently makes the
+# English copy the catalog key, which is the exact drift these rules exist to prevent.
+custom_rules:
+  localized_text_literal:
+    name: "Literal string in Text"
+    regex: 'Text\("'
+    message: "Use Text(.someKey) backed by Localizable.xcstrings, not a string literal."
+    severity: error
+
+  localized_view_literal:
+    name: "Literal string in a view initialiser"
+    regex: '\b(navigationTitle|navigationBarTitle|Button|Label|TextField|SecureField|Toggle|Section|Stepper|Picker|Link|confirmationDialog)\("'
+    message: "Pass a localized value — Text(.someKey) or L(.someKey) — not a literal."
+    severity: error
+
+  localized_literal_key:
+    name: "Literal localization key"
+    regex: '(String\(localized:\s*"|LocalizedStringKey\("|LocalizedStringResource\(")'
+    message: "Use the generated symbol: L(.someKey) / String(localized: .someKey)."
+    severity: error
+
+  localized_legacy_api:
+    name: "Legacy localization API"
+    regex: '(NSLocalizedString\(|\.localizedStringWithFormat\()'
+    message: "String catalogs only — use the generated LocalizedStringResource symbols."
+    severity: error
+
+  localized_accessibility_literal:
+    name: "Literal accessibility string"
+    regex: '\.accessibility(Label|Hint|Value)\("'
+    message: "Accessibility strings are user-facing — use Text(.someKey) or L(.someKey)."
+    severity: error
+
+nesting:
+  type_level: 3
+line_length: 120
+file_length:
+  warning: 500
+  error: 1200
+type_name:
+  min_length: 3
+  max_length:
+    warning: 40
+    error: 50
+  allowed_symbols: ["_Previews"]
