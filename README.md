@@ -27,11 +27,12 @@ accounts, backend, API keys, or third-party dependencies are required.
 
 ## Decisions
 
-**Storage.** SwiftData holds medications and dose records locally. Repository
-reads throw rather than returning empty, so a broken store cannot look like a
-day with nothing on it. If the store cannot be opened — a notification tap can
-launch the app while the device is still locked — that surfaces as a retryable
-error rather than a crash or a silent in-memory copy.
+**Storage.** SwiftData holds medications and dose records locally. Reads throw
+rather than returning empty: a failed read shows an error and a retry, not
+an empty day that reads as lost data. Opening the store can fail too — a
+bad migration, no disk — so it is opened lazily and retried per call, rather
+than trapping at launch or falling back to memory that would discard what the
+user enters.
 
 **Permission.** Requested at the end of onboarding, after the copy has explained
 what reminders are for; if declined there, on the first save of a medication
